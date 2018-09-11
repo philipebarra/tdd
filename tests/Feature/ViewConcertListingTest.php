@@ -11,6 +11,7 @@ use Illuminate\Foundation\Testing\RefreshDatabase;
 class ViewConcertListingTest extends TestCase
 {
     use DatabaseMigrations;
+
     /**
      * A basic test example.
      *
@@ -18,9 +19,6 @@ class ViewConcertListingTest extends TestCase
      */
     public function testBasicTest()
     {
-//        $response = $this->get('/');
-//
-//        $response->assertStatus(200);
         $concert = Concert::create([
             'title' => 'The Red Chord',
             'subtitle' => 'with Animosity and Lethargy',
@@ -34,9 +32,8 @@ class ViewConcertListingTest extends TestCase
             'additional_information' => 'For tickets, call (555) 555-5555.',
         ]);
 
-        $response = $this->get('/concerts/'. $concert->id);
+        $response = $this->get('/concerts/' . $concert->id);
         $response->assertStatus(200);
-//
         $response->assertSee('The Red Chord');
         $response->assertSee('with Animosity and Lethargy');
         $response->assertSee('December 13, 2016');
@@ -47,6 +44,16 @@ class ViewConcertListingTest extends TestCase
         $response->assertSee('Laraville, ON 17916');
         $response->assertSee('For tickets, call (555) 555-5555.');
 
-//        $this->browse();
     }
+
+//    /** @test */
+//    public function user_cannot_view_unpublished_concert_listings()
+//    {
+//        $concert = factory(Concert::class)->create([
+//            'published_at' => null
+//        ]);
+//
+//        $response = $this->get('concerts/' . $concert->id);
+//        $response->assertStatus(404);
+//    }
 }
