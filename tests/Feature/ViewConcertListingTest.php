@@ -16,10 +16,11 @@ class ViewConcertListingTest extends TestCase
      * A basic test example.
      *
      * @return void
+     * @test
      */
-    public function testBasicTest()
+    public function user_can_view_a_published_concert_listing()
     {
-        $concert = Concert::create([
+        $concert = factory(Concert::class)->states('published')->create([
             'title' => 'The Red Chord',
             'subtitle' => 'with Animosity and Lethargy',
             'date' => Carbon::parse('December 13, 2016 8:00pm'),
@@ -46,14 +47,12 @@ class ViewConcertListingTest extends TestCase
 
     }
 
-//    /** @test */
-//    public function user_cannot_view_unpublished_concert_listings()
-//    {
-//        $concert = factory(Concert::class)->create([
-//            'published_at' => null
-//        ]);
-//
-//        $response = $this->get('concerts/' . $concert->id);
-//        $response->assertStatus(404);
-//    }
+    /** @test */
+    public function user_cannot_view_unpublished_concert_listings()
+    {
+        $concert = factory(Concert::class)->states('unpublished')->create();
+
+        $response = $this->get('concerts/' . $concert->id);
+        $response->assertStatus(404);
+    }
 }
